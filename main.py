@@ -16,12 +16,13 @@ if __name__ == "__main__":
         "SELECT cur_page from video_info where keyword = %s order by cur_page desc",
         keyword)
 
-    cur_page = 1
+    cur_page = 0
     for r in cur:
         cur_page = r[0]
 
     video = VideoDownloader('./download.log')
-    video.downloads_dir = "/data/mp4/"
+    # video.downloads_dir = "/Users/jetwong/Movies/youtube/mp4/" #本地
+    video.downloads_dir = "/data/mp4/"  #服务器
     video.resolution_width = 1080
     video.page = cur_page + 1
     video.per_page = 20
@@ -39,6 +40,7 @@ if __name__ == "__main__":
                     "SELECT video_id from video_info where video_id = %s",
                     video_item['id'])
                 if cur.rowcount > 0:
+                    
                     continue
 
                 title = video_item['url'].split('/')[-2].split('-')
