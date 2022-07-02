@@ -13,7 +13,7 @@ if __name__ == "__main__":
                            db='pexels_video')
     cur = conn.cursor()
     cur.execute(
-        "SELECT cur_page from video_info where keyword = %s order by cur_page desc",
+        "SELECT cur_page from video_info where keyword = %s order by cur_page desc limit 1",
         keyword)
 
     cur_page = 0
