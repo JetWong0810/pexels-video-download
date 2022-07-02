@@ -21,7 +21,7 @@ if __name__ == "__main__":
         cur_page = r[0]
 
     video = VideoDownloader('./download.log')
-    video.downloads_dir = "/Users/jetwong/Movies/youtube/mp4/"
+    video.downloads_dir = "/data/mp4/"
     video.resolution_width = 1080
     video.page = cur_page + 1
     video.per_page = 20
