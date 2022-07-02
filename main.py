@@ -3,7 +3,7 @@ from video_downloader import VideoDownloader
 
 if __name__ == "__main__":
 
-    keyword = 'mountains'
+    keyword = 'landscape'
 
     pymysql.install_as_MySQLdb()
 
@@ -34,6 +34,11 @@ if __name__ == "__main__":
                     (key, result[r][i][key])
                     for key in ['id', 'width', 'height', 'tags', 'url']
                 ])
+
+                cur.execute("SELECT video_id from video_info where is_download = 0")
+                if cur.rowcount > 0:
+                    continue
+                
                 title = video_item['url'].split('/')[-2].split('-')
                 title.pop()
                 title = " ".join(title).title()
