@@ -49,7 +49,7 @@ if __name__ == "__main__":
                 tags = ','.join(video_item['tags'])
                 insert_item = (video_item['id'], video_item['url'], title,
                                tags, video_item['width'], video_item['height'],
-                               keyword, cur_page)
+                               keyword, video.page)
 
                 cur.execute(
                     "INSERT INTO video_info(video_id, url, title, tags, width, height, keyword, cur_page) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')"
