@@ -1,10 +1,8 @@
 import pymysql
+import os;
 from video_downloader import VideoDownloader
 
 if __name__ == "__main__":
-
-    keyword = 'landscape'
-
     pymysql.install_as_MySQLdb()
 
     conn = pymysql.connect(host='182.92.3.69',
@@ -12,6 +10,17 @@ if __name__ == "__main__":
                            passwd="test123456",
                            db='pexels_video')
     cur = conn.cursor()
+
+    #获取keyword 
+    cur.execute(
+        "SELECT keyword from video_keyword where is_del = 0 order by rand() limit 1")
+
+    keyword = 'nature'
+    for r in cur:
+        keyword = r[0]
+
+    print(f"当前获取到的关键词:{keyword}")
+
     cur.execute(
         "SELECT cur_page from video_info where keyword = %s order by cur_page desc limit 1",
         keyword)
@@ -20,9 +29,10 @@ if __name__ == "__main__":
     for r in cur:
         cur_page = r[0]
 
+    print(f"当前获取分页:{cur_page}")
+
     video = VideoDownloader('./download.log')
-    # video.downloads_dir = "/Users/jetwong/Movies/youtube/mp4/" #本地
-    video.downloads_dir = "/data/mp4/"  #服务器
+    video.downloads_dir = os.getenv('YOUTUBE_FILE_PATH') + '/mp4/'
     video.resolution_width = 1080
     video.page = cur_page + 1
     video.per_page = 20
@@ -40,7 +50,6 @@ if __name__ == "__main__":
                     "SELECT video_id from video_info where video_id = %s",
                     video_item['id'])
                 if cur.rowcount > 0:
-                    
                     continue
 
                 title = video_item['url'].split('/')[-2].split('-')
